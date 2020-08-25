@@ -88,6 +88,13 @@ namespace Effekseer.Data
 		Double = 2,
 	}
 
+	public enum EasingType : int
+	{
+		LeftRightSpeed = 0,
+		Linear = 1,
+
+	}
+
 	public enum EasingStart : int
 	{
 		[Key(key = "Easing_StartSlowly3")]
@@ -308,6 +315,16 @@ namespace Effekseer.Data
 			private set;
 		}
 
+		/// <summary>
+		/// 1.6 or later
+		/// </summary>
+		[Selected(ID =100, Value =0)]
+		public Value.Vector3DWithRandom Middle
+		{
+			get;
+			private set;
+		}
+
 		[Key(key = "Easing_End")]
 		public Value.Vector3DWithRandom End
 		{
@@ -315,26 +332,74 @@ namespace Effekseer.Data
 			private set;
 		}
 
+		/// <summary>
+		/// 1.6 or later
+		/// </summary>
+		[Selector(ID = 300)]
+		public Value.Enum<EasingType> Type
+		{
+			get;
+			private set;
+		}
+
+
 		[Key(key = "Easing_StartSpeed")]
+		[Selected(ID = 0, Value = (int)EasingType.LeftRightSpeed)]
 		public Value.Enum<EasingStart> StartSpeed
 		{
 			get;
 			private set;
 		}
 
+		// TODO : selector
 		[Key(key = "Easing_EndSpeed")]
+		[Selected(ID = 0, Value = (int)EasingType.LeftRightSpeed)]
 		public Value.Enum<EasingEnd> EndSpeed
 		{
 			get;
 			private set;
 		}
 
+		[Selector(ID = 100)]
+		public Value.Boolean IsMiddlePointEnabled { get; private set; }
+
+		[Selector(ID = 200)]
+
+		public Value.Boolean IsRandomGroupEnabled { get; private set; }
+
+		/// <summary>
+		/// 1.6 or later
+		/// </summary>
+		[Selected(ID = 200, Value = 0)]
+		public Value.Int RandomGroupX { get; private set; }
+
+		/// <summary>
+		/// 1.6 or later
+		/// </summary>
+		[Selected(ID = 200, Value = 0)]
+		public Value.Int RandomGroupY { get; private set; }
+
+		/// <summary>
+		/// 1.6 or later
+		/// </summary>
+		[Selected(ID = 200, Value = 0)]
+		public Value.Int RandomGroupZ { get; private set; }
+
 		internal Vector3DEasingParamater(float defaultX = 0.0f, float defaultY = 0.0f, float defaultZ = 0.0f)
 		{
+			Type = new Value.Enum<EasingType>();
 			Start = new Value.Vector3DWithRandom(defaultX, defaultY, defaultZ);
+			Middle = new Value.Vector3DWithRandom(defaultX, defaultY, defaultZ);
 			End = new Value.Vector3DWithRandom(defaultX, defaultY, defaultZ);
 			StartSpeed = new Value.Enum<EasingStart>(EasingStart.Start);
 			EndSpeed = new Value.Enum<EasingEnd>(EasingEnd.End);
+
+			IsMiddlePointEnabled = new Value.Boolean(false);
+			IsRandomGroupEnabled = new Value.Boolean(false);
+
+			RandomGroupX = new Value.Int(0);
+			RandomGroupY = new Value.Int(1);
+			RandomGroupZ = new Value.Int(2);
 		}
 	}
 
